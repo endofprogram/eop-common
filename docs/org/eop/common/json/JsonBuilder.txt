@@ -1,0 +1,95 @@
+@author 李新杰
+@date 2018-07-10
+@mp.weixin 编程新说
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  "orderId":"",
+  "reserveCode":"",
+  "createTime":"",
+  "payTime":"",
+  "numberInfo":{
+      "numberType":"",
+      "number":"",
+      "chargeType":"",
+      "iccid":"",
+      "brand":"",
+      "numberSubtotal":""
+  },
+  "userInfo":{
+      "idType":"",
+      "id":"",
+      "name":"",
+      "address":"",
+      "issueDate":"",
+      "expireDate":""
+  },
+      "goodsInfo":[
+          {
+              "goodsId":"",
+              "quantity":"",
+              "price":"",
+              "goodsDesc":""
+          }
+      ],
+      "goodsSubtotal":"",
+      "otherFee":"",
+      "total":"",
+  "isDistribution":"",
+  "postInfo":{
+      "name":"",
+      "province":"",
+      "city":"",
+      "district":"",
+      "address":"",
+      "contactPhone":"",
+      "mobile":"",
+      "zipCode":"",
+      "comments":""
+  },
+  "attributes":[
+      {
+          "name":"",
+          "value":""
+      }
+  ],
+"feedbackUrl":""
+}
