@@ -28,6 +28,7 @@
 		<hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
 		<dubbo.version>2.5.10</dubbo.version>
 		<curator.version>4.0.0</curator.version>
+		<zookeeper.version>3.4.13</zookeeper.version>
 		<poi.version>3.12</poi.version>
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<commons-codec.version>1.11</commons-codec.version>
@@ -225,6 +226,17 @@
 			<groupId>org.apache.curator</groupId>
 			<artifactId>curator-recipes</artifactId>
 			<version>${curator.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.zookeeper</groupId>
+					<artifactId>zookeeper</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>${zookeeper.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
