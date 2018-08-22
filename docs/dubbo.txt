@@ -44,6 +44,41 @@ DubboClassPathBeanDefinitionScanner extends ClassPathBeanDefinitionScanner：只
 ReferenceAnnotationBeanPostProcessor：@Reference注解的bean后处理器
 用来处理@Reference字段的注入
 
+ private final ConcurrentMap<String, InjectionMetadata> injectionMetadataCache =
+            new ConcurrentHashMap<String, InjectionMetadata>(256);
+注入元数据缓存：
+key是要处理的bean的名称或类的名称（为了向后兼容），value包含了需要被注入的字段或发方法等信息。
+
+private final ConcurrentMap<String, ReferenceBean<?>> referenceBeansCache =
+            new ConcurrentHashMap<String, ReferenceBean<?>>();
+ReferenceBean<?>缓存：
+key = reference.group() + "/" + interfaceName + ":" + reference.version();
+说明在dubbo里面，所属组，接口名称，版本号三者组合起来才具有唯一性，可以映射到一个服务提供者提供的服务。
+value是ReferenceBean<?>，它属于dubbo里的内容，可以理解为它管理了对远程服务的调用。
+
+@Override
+    public PropertyValues postProcessPropertyValues(
+            PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName)
+在该方法里完成注入过程。分为两步，一是从bean中检测出需要注入的元数据，二是把对应的值注入进去。
+
+private InjectionMetadata findReferenceMetadata(String beanName, Class<?> clazz, PropertyValues pvs)
+1、如果缓存中有，且正常，则返回缓存
+2、如果缓存中没有，则构建一个，放入缓存
+3、如果缓存中有，但不正常，则清除旧缓存对应的属性值，重新生成一个放入缓存
+
+private InjectionMetadata buildReferenceMetadata(final Class<?> beanClass)
+构建元数据。分两步，一是从bean中找出需要注入的字段，二是从bean中找出需要注入的方法。
+
+private List<InjectionMetadata.InjectedElement> findFieldReferenceMetadata(final Class<?> beanClass)
+找出所有需要被注入的字段。
+private class ReferenceFieldElement extends InjectionMetadata.InjectedElement
+继承父类，重写注入方法。
+
+private List<InjectionMetadata.InjectedElement> findMethodReferenceMetadata(final Class<?> beanClass)
+找出所有需要被注入的方法。
+private class ReferenceMethodElement extends InjectionMetadata.InjectedElement
+继承父类，重写注入方法。
+
 BeanPostProcessor：接口，bean后处理器
 1、一个工厂钩子，允许自定义修改新的bean实例，如检测标记接口或用代理包装它
 2、容器能在它的所有bean定义中自动检查出BeanPostProcessor的实现类，并把它们应用于任何后续创建的bean实例，
