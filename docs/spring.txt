@@ -1,0 +1,114 @@
+
+interface ClassMetadata：类元数据，@since 2.5
+定义一个指定类的抽象元数据，以一种形式不要求那个类被加载
+
+class StandardClassMetadata：标准的类元数据，@since 2.5
+	implements ClassMetadata
+使用标准反射来反省指定类
+	
+class ClassMetadataReadingVisitor：类元数据读取访问者，@since 2.5
+	extends ClassVisitor implements ClassMetadata
+
+
+interface AnnotationMetadata：注解元数据，@since 2.5
+	extends ClassMetadata, AnnotatedTypeMetadata
+
+class StandardAnnotationMetadata：标准的注解元数据，@since 2.5
+	extends StandardClassMetadata implements AnnotationMetadata
+
+class AnnotationMetadataReadingVisitor：注解元数据读取访问者，@since 2.5
+	extends ClassMetadataReadingVisitor implements AnnotationMetadata
+
+
+interface MethodMetadata：方法元数据，@since 3.0
+	extends AnnotatedTypeMetadata
+使用标准的反射来反省一个给定的方法
+
+class StandardMethodMetadata：标准的方法元数据，@since 3.0
+	implements MethodMetadata
+
+class MethodMetadataReadingVisitor：方法元数据读取访问者，@since 2.5
+	extends MethodVisitor implements MethodMetadata
+ASM方法访问者，查找定义在一个方法上的注解，通过MethodMetadata接口来暴露它们
+
+
+interface AnnotatedTypeMetadata：被注解类型元数据，@since 4.0
+访问一个指定类型（类或方法）的注解，以一种形式不要求类加载
+
+
+
+
+interface BeanDefinition：@since 19.03.2004，bean定义
+	extends AttributeAccessor, BeanMetadataElement
+bean定义描述一个bean实例，包含属性值，构造函数参数值，或其它信息由具体实现提供
+这是一个最小化的接口，主要目的是允许bean工厂后处理器来反思和修改属性值和其它bean
+元数据
+
+class RootBeanDefinition：根bean定义
+	extends AbstractBeanDefinition
+
+class ChildBeanDefinition：子bean定义
+	extends AbstractBeanDefinition
+
+class GenericBeanDefinition：通用bean定义，@since 2.5
+	extends AbstractBeanDefinition
+
+interface AnnotatedBeanDefinition：基于注解bean定义，@since 2.5
+	extends BeanDefinition
+主要用来暴露注解元数据
+
+class AnnotatedGenericBeanDefinition：基于注解通用bean定义，@since 2.5
+	extends GenericBeanDefinition implements AnnotatedBeanDefinition
+
+class ScannedGenericBeanDefinition：基于扫描通用bean定义，@since 2.5
+	extends GenericBeanDefinition implements AnnotatedBeanDefinition
+
+class ConfigurationClassBeanDefinition：配置类bean定义
+	extends RootBeanDefinition implements AnnotatedBeanDefinition
+
+interface BeanReference：bean引用，@since 2.0
+	extends BeanMetadataElement
+
+class RuntimeBeanReference：运行时bean引用
+	implements BeanReference
+
+class RuntimeBeanNameReference：运行时bean名称引用，@since 2.0
+	implements BeanReference
+
+interface DefaultsDefinition：默认定义，@since 2.0.2
+	extends BeanMetadataElement
+
+class DocumentDefaultsDefinition：文档默认定义，@since 2.0.2
+	implements DefaultsDefinition
+
+interface ComponentDefinition：组件定义，@since 2.0
+	extends BeanMetadataElement
+
+class BeanDefinitionHolder：@since 1.0.2
+	implements BeanMetadataElement
+
+class BeanComponentDefinition：@since 2.0
+	extends BeanDefinitionHolder implements ComponentDefinition
+
+
+
+interface AnnotationConfigRegistry：基于注解的ApplicationContext的通用接口
+void register(Class<?>... annotatedClasses)
+注册一到多个注解类，方法时幂等的，同一个类添加多次没有影响
+void scan(String... basePackages)
+对一个包及其子包执行扫描，去注册里面的注解类
+
+class AnnotationConfigApplicationContext extends GenericApplicationContext
+	implements AnnotationConfigRegistry
+1、独立的application context，接受注解类作为输入
+2、注解可以是@Configuration，也可以是@Component和JSR-330兼容的javax.inject注解
+3、可以单个类单个类注册，也可以扫描
+注：在多个@Configuration类时，后面类里面定义的@Bean方法将覆盖前面类里的，是故意
+这样做的，目的是通过额外的@Configuration类来重写确定的bean定义。
+
+注册和扫描功能委托给两个类AnnotatedBeanDefinitionReader和ClassPathBeanDefinitionScanner分别去做。
+
+class AnnotatedBeanDefinitionReader：基于注解bean定义读取器
+以可编程的方式显式注册
+class ClassPathBeanDefinitionScanner
+	extends ClassPathScanningCandidateComponentProvider：类路径bean定义扫描器
