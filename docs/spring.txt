@@ -92,13 +92,14 @@ class BeanComponentDefinition：@since 2.0
 
 
 
-interface AnnotationConfigRegistry：基于注解的ApplicationContext的通用接口
+interface AnnotationConfigRegistry：基于注解的ApplicationContext的通用接口，@since 4.1
 void register(Class<?>... annotatedClasses)
 注册一到多个注解类，方法时幂等的，同一个类添加多次没有影响
 void scan(String... basePackages)
 对一个包及其子包执行扫描，去注册里面的注解类
 
-class AnnotationConfigApplicationContext extends GenericApplicationContext
+class AnnotationConfigApplicationContext：基于注解配置的容器，@since 3.0
+	extends GenericApplicationContext
 	implements AnnotationConfigRegistry
 1、独立的application context，接受注解类作为输入
 2、注解可以是@Configuration，也可以是@Component和JSR-330兼容的javax.inject注解
@@ -106,9 +107,22 @@ class AnnotationConfigApplicationContext extends GenericApplicationContext
 注：在多个@Configuration类时，后面类里面定义的@Bean方法将覆盖前面类里的，是故意
 这样做的，目的是通过额外的@Configuration类来重写确定的bean定义。
 
-注册和扫描功能委托给两个类AnnotatedBeanDefinitionReader和ClassPathBeanDefinitionScanner分别去做。
+注册和扫描功能委托给下面两个类分别去做
 
-class AnnotatedBeanDefinitionReader：基于注解bean定义读取器
+class AnnotatedBeanDefinitionReader：基于注解bean定义读取器，@since 3.0
 以可编程的方式显式注册
-class ClassPathBeanDefinitionScanner
-	extends ClassPathScanningCandidateComponentProvider：类路径bean定义扫描器
+
+class ClassPathBeanDefinitionScanner：类路径bean定义扫描器，@since 2.5
+	extends ClassPathScanningCandidateComponentProvider
+1、在类路径上检测候选bean，注册相应的bean定义到登记处
+2、通过类型过滤器来检测候选bean，默认的过滤器是@Component，@Repository，@Service或@Controller
+也支持Java EE 6 的 javax.annotation.ManagedBean 和 JSR-330 的 javax.inject.Named
+
+
+
+
+
+
+
+
+
