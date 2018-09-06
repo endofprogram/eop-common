@@ -25,6 +25,13 @@ public class CycleRadixIdGenerator implements IdGenerator {
 		initNodeNum();
 	}
 	
+	public CycleRadixIdGenerator(long baseTime, long nodeNum) {
+		assert baseTime < System.currentTimeMillis();
+		assert nodeNum >= 0;
+		this.baseTime = baseTime;
+		this.nodeNum = nodeNum;
+	}
+	
 	public long getCycleNum() {
 		if (cycleNum >= 65535) {
 			cycleNum = -1;
