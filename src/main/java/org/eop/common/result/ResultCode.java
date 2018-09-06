@@ -7,8 +7,8 @@ package org.eop.common.result;
 public enum ResultCode {
 
 	Success(0, "成功"),
-	FAILURE(-1, "失败"),
-	ServerError(-500, "服务器程序错误");
+	Failure(-1, "失败"),
+	ServerError(500, "服务器程序错误");
 	
 	private int code;
 	private String desc;
