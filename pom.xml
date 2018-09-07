@@ -13,6 +13,7 @@
 
 	<properties>
 		<spring.boot.version>1.5.15.RELEASE</spring.boot.version>
+		<spring.data.redis.version>1.8.14.RELEASE</spring.data.redis.version>
 		<spring.version>4.3.18.RELEASE</spring.version>
 		<dom4j.version>2.0.0</dom4j.version>
 		<httpclient.version>4.5.4</httpclient.version>
@@ -60,6 +61,12 @@
 			<version>${spring.boot.version}</version>
 			<scope>provided</scope>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>${spring.data.redis.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
