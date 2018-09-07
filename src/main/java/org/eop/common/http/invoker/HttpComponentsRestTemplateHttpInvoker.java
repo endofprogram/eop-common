@@ -38,9 +38,27 @@ public class HttpComponentsRestTemplateHttpInvoker implements IHttpInvoker {
 
 	private static final Logger log = LoggerFactory.getLogger(HttpComponentsRestTemplateHttpInvoker.class);
 	
+	private int connectionRequestTimeout = 60 * 1000;
+	private int connectTimeout = 60 * 1000;
+	private int readTimeout = 120 * 1000;
+	private int maxConnPerRoute = 256;
+	private int maxConnTotal = 2560;
+	private long maxIdleTime = 1200;
+	
 	private RestTemplate restTemplate;
 	
 	public HttpComponentsRestTemplateHttpInvoker() {
+		initRestTemplate();
+	}
+	
+	public HttpComponentsRestTemplateHttpInvoker(int connectionRequestTimeout, int connectTimeout,
+			int readTimeout, int maxConnPerRoute, int maxConnTotal, long maxIdleTime) {
+		this.connectionRequestTimeout = connectionRequestTimeout;
+		this.connectTimeout = connectTimeout;
+		this.readTimeout = readTimeout;
+		this.maxConnPerRoute = maxConnPerRoute;
+		this.maxConnTotal = maxConnTotal;
+		this.maxIdleTime = maxIdleTime;
 		initRestTemplate();
 	}
 	
@@ -142,18 +160,18 @@ public class HttpComponentsRestTemplateHttpInvoker implements IHttpInvoker {
 	
 	private CloseableHttpClient buildHttpClient() {
 		return HttpClients.custom()
-				.setMaxConnPerRoute(256)
-				.setMaxConnTotal(2560)
+				.setMaxConnPerRoute(maxConnPerRoute)
+				.setMaxConnTotal(maxConnTotal)
 				.evictExpiredConnections()
-				.evictIdleConnections(1200L, TimeUnit.SECONDS)
+				.evictIdleConnections(maxIdleTime, TimeUnit.SECONDS)
 				.build();
 	}
 	
 	private void configHttpComponentsClientHttpRequestFactory(HttpComponentsClientHttpRequestFactory clientHttpRequestFactory) {
 		clientHttpRequestFactory.setBufferRequestBody(false);
-		clientHttpRequestFactory.setConnectionRequestTimeout(60 * 1000);
-		clientHttpRequestFactory.setConnectTimeout(60 * 1000);
-		clientHttpRequestFactory.setReadTimeout(120 * 1000);
+		clientHttpRequestFactory.setConnectionRequestTimeout(connectionRequestTimeout);
+		clientHttpRequestFactory.setConnectTimeout(connectTimeout);
+		clientHttpRequestFactory.setReadTimeout(readTimeout);
 	}
 	
 }

@@ -38,9 +38,20 @@ public class OkHttp3RestTemplateHttpInvoker implements IHttpInvoker {
 
 	private static final Logger log = LoggerFactory.getLogger(OkHttp3RestTemplateHttpInvoker.class);
 	
+	private int connectTimeout = 60 * 1000;
+	private int readTimeout = 120 * 1000;
+	private int writeTimeout = 60 * 1000;
+	
 	private RestTemplate restTemplate;
 	
 	public OkHttp3RestTemplateHttpInvoker() {
+		initRestTemplate();
+	}
+	
+	public OkHttp3RestTemplateHttpInvoker(int connectTimeout, int readTimeout, int writeTimeout) {
+		this.connectTimeout = connectTimeout;
+		this.readTimeout = readTimeout;
+		this.writeTimeout = writeTimeout;
 		initRestTemplate();
 	}
 	
@@ -147,9 +158,9 @@ public class OkHttp3RestTemplateHttpInvoker implements IHttpInvoker {
 	}
 	
 	private void configHttpComponentsClientHttpRequestFactory(OkHttp3ClientHttpRequestFactory clientHttpRequestFactory) {
-		clientHttpRequestFactory.setConnectTimeout(60 * 1000);
-		clientHttpRequestFactory.setReadTimeout(120 * 1000);
-		clientHttpRequestFactory.setWriteTimeout(60 * 1000);
+		clientHttpRequestFactory.setConnectTimeout(connectTimeout);
+		clientHttpRequestFactory.setReadTimeout(readTimeout);
+		clientHttpRequestFactory.setWriteTimeout(writeTimeout);
 	}
 	
 }
