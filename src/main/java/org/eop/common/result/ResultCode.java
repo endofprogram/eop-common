@@ -8,6 +8,7 @@ public enum ResultCode {
 
 	Success(0, "成功"),
 	Failure(-1, "失败"),
+	Denial(-2, "拒绝"),
 	ServerError(500, "服务器程序错误");
 	
 	private int code;
