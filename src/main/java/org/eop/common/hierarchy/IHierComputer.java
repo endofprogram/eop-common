@@ -1,0 +1,16 @@
+package org.eop.common.hierarchy;
+
+import java.util.Collection;
+
+/**
+ * @author lixinjie
+ * @since 2018-10-22
+ */
+public interface IHierComputer<T> {
+
+	Collection<T> getDirect();
+	
+	Collection<IHierarchy<T>> getAllHierarchy();
+	
+	Collection<T> getAllReachable();
+}
