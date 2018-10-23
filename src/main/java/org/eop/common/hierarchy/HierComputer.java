@@ -21,6 +21,7 @@ public class HierComputer<T> implements IHierComputer<T> {
 	private Map<T, Set<T>> objectsReachableInOneStepMap;
 	private Map<T, Set<T>> objectsReachableInOneOrMoreStepsMap;
 	
+	private Collection<T> reachable;
 	private Collection<T> allReachable;
 	
 	public HierComputer(Collection<T> direct, Collection<IHierarchy<T>> allHierarchy) {
@@ -38,6 +39,11 @@ public class HierComputer<T> implements IHierComputer<T> {
 	public Collection<IHierarchy<T>> getAllHierarchy() {
 		return allHierarchy;
 	}
+	
+	@Override
+	public Collection<T> getReachable() {
+		return reachable;
+	}
 
 	@Override
 	public Collection<T> getAllReachable() {
@@ -48,12 +54,14 @@ public class HierComputer<T> implements IHierComputer<T> {
 		buildObjectsReachableInOneStepMap();
 		buildObjectsReachableInOneOrMoreStepsMap();
 		
+		reachable = new HashSet<>();
 		allReachable = new HashSet<>();
 		for (T object : direct) {
 			allReachable.add(object);
 			Set<T> additionalReachable = 
 					objectsReachableInOneOrMoreStepsMap.get(object);
 			if (additionalReachable != null) {
+				reachable.addAll(additionalReachable);
 				allReachable.addAll(additionalReachable);
 			}
 		}

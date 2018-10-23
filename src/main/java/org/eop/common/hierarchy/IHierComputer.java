@@ -12,5 +12,7 @@ public interface IHierComputer<T> {
 	
 	Collection<IHierarchy<T>> getAllHierarchy();
 	
+	Collection<T> getReachable();
+	
 	Collection<T> getAllReachable();
 }
