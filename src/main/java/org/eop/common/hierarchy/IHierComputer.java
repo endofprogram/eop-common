@@ -10,7 +10,7 @@ public interface IHierComputer<T> {
 
 	Collection<T> getDirect();
 	
-	Collection<IHierarchy<T>> getAllHierarchy();
+	Collection<? extends IHierarchy<T>> getAllHierarchy();
 	
 	Collection<T> getReachable();
 	

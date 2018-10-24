@@ -16,7 +16,7 @@ import java.util.Set;
 public class HierComputer<T> implements IHierComputer<T> {
 
 	private Collection<T> direct;
-	private Collection<IHierarchy<T>> allHierarchy;
+	private Collection<? extends IHierarchy<T>> allHierarchy;
 	
 	private Map<T, Set<T>> objectsReachableInOneStepMap;
 	private Map<T, Set<T>> objectsReachableInOneOrMoreStepsMap;
@@ -24,7 +24,7 @@ public class HierComputer<T> implements IHierComputer<T> {
 	private Collection<T> reachable;
 	private Collection<T> allReachable;
 	
-	public HierComputer(Collection<T> direct, Collection<IHierarchy<T>> allHierarchy) {
+	public HierComputer(Collection<T> direct, Collection<? extends IHierarchy<T>> allHierarchy) {
 		this.direct = direct;
 		this.allHierarchy = allHierarchy;
 		buildAllReachable();
@@ -36,7 +36,7 @@ public class HierComputer<T> implements IHierComputer<T> {
 	}
 
 	@Override
-	public Collection<IHierarchy<T>> getAllHierarchy() {
+	public Collection<? extends IHierarchy<T>> getAllHierarchy() {
 		return allHierarchy;
 	}
 	
