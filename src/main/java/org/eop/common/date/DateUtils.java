@@ -14,6 +14,7 @@ public class DateUtils {
 	
 	private static final SimpleDateFormat sdf14 = new SimpleDateFormat("yyyyMMddHHmmss");
 	private static final SimpleDateFormat sdf16 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+	private static final SimpleDateFormat sdf19 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public static String getDateStr14() {
 		return getDateStr14(new Date());
@@ -29,6 +30,14 @@ public class DateUtils {
 	
 	public static String getDateStr16(Date date) {
 		return sdf16.format(date);
+	}
+	
+	public static String getDateStr19() {
+		return getDateStr19(new Date());
+	}
+	
+	public static String getDateStr19(Date date) {
+		return sdf19.format(date);
 	}
 	
 	public static boolean greatThan(Date time) {
